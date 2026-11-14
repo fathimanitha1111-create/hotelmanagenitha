@@ -1,0 +1,37 @@
+/* ==========================================================================
+   Book Room Page Stylesheet (book_room.css)
+   ========================================================================== */
+
+.booking-form-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-md);
+  padding: 2.5rem;
+}
+
+.booking-summary-card {
+  background: var(--primary-navy);
+  color: #FFFFFF;
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: var(--shadow-lg);
+}
+
+.booking-summary-card .table {
+  color: #FFFFFF;
+}
+
+.booking-step-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent-gold);
+  color: var(--primary-navy);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  margin-right: 0.5rem;
+}

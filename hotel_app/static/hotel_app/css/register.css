@@ -1,0 +1,41 @@
+/* ==========================================================================
+   VIP Member Registration Stylesheet (register.css)
+   ========================================================================== */
+
+.register-card-container {
+  min-height: 75vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+.register-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-lg);
+  padding: 3rem;
+  max-width: 650px;
+  width: 100%;
+}
+
+.perks-box {
+  background: var(--bg-cream);
+  border-left: 3px solid var(--accent-gold);
+  border-radius: var(--radius-md);
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.register-card .form-control {
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border-subtle);
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+}
+
+.register-card .form-control:focus {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 4px var(--accent-gold-glow);
+}

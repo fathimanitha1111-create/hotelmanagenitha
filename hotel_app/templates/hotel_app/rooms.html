@@ -1,0 +1,171 @@
+{% extends 'hotel_app/base.html' %}
+{% load static %}
+
+{% block title %}Accommodations &amp; Suites | The Grand Azure{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'hotel_app/css/rooms.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Subpage Header -->
+<div class="py-5 bg-navy-dark text-white text-center position-relative">
+  <div class="container py-4 position-relative" style="z-index: 2;">
+    <span class="badge bg-warning text-dark px-3 py-1 rounded-pill text-uppercase mb-2">Accommodations Collection</span>
+    <h1 class="display-4 font-serif fw-bold text-white mb-2">Suites, Penthouses &amp; Coastal Villas</h1>
+    <p class="text-white-50 lead mx-auto" style="max-width: 650px;">
+      Explore our award-winning collection of luxury residences, each thoughtfully designed with private terraces, marble baths, and panoramic ocean views.
+    </p>
+  </div>
+</div>
+
+<div class="container py-5">
+  <!-- Filter & Search Toolbar -->
+  <div class="card border-0 shadow-sm rounded-4 p-4 mb-5 bg-white">
+    <form method="GET" action="{% url 'rooms' %}" class="row g-3 align-items-center">
+      <!-- Search Input -->
+      <div class="col-lg-4 col-md-6">
+        <div class="input-group">
+          <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
+          <input type="text" name="q" class="form-control bg-light border-start-0" placeholder="Search suites, features, views..." value="{{ search_query|default:'' }}">
+        </div>
+      </div>
+
+      <!-- Category Filter -->
+      <div class="col-lg-3 col-md-6">
+        <select name="category" class="form-select bg-light" onchange="this.form.submit()">
+          <option value="all" {% if not selected_category or selected_category == 'all' %}selected{% endif %}>All Suite Categories</option>
+          {% for cat in categories %}
+            <option value="{{ cat.slug }}" {% if selected_category == cat.slug %}selected{% endif %}>{{ cat.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Capacity Filter -->
+      <div class="col-lg-2 col-md-6">
+        <select name="capacity" class="form-select bg-light" onchange="this.form.submit()">
+          <option value="">Any Guests</option>
+          <option value="1" {% if capacity == '1' %}selected{% endif %}>1+ Guests</option>
+          <option value="2" {% if capacity == '2' %}selected{% endif %}>2+ Guests</option>
+          <option value="3" {% if capacity == '3' %}selected{% endif %}>3+ Guests</option>
+          <option value="4" {% if capacity == '4' %}selected{% endif %}>4+ Guests</option>
+        </select>
+      </div>
+
+      <!-- Sort By -->
+      <div class="col-lg-2 col-md-6">
+        <select name="sort" class="form-select bg-light" onchange="this.form.submit()">
+          <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+          <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+          <option value="rating" {% if sort_by == 'rating' %}selected{% endif %}>Highest Rated</option>
+        </select>
+      </div>
+
+      <!-- Reset / Filter Button -->
+      <div class="col-lg-1 col-12 d-flex gap-2">
+        <button type="submit" class="btn btn-warning w-100 rounded-3" title="Apply Filter">
+          <i class="bi bi-funnel-fill"></i>
+        </button>
+        {% if search_query or selected_category or capacity %}
+          <a href="{% url 'rooms' %}" class="btn btn-outline-secondary rounded-3" title="Clear Filters">
+            <i class="bi bi-x-lg"></i>
+          </a>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+
+  <!-- Active Results Counter -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="font-serif fw-bold mb-0">
+      Available Suites 
+      <span class="text-muted fs-6 fw-normal">({{ total_rooms }} residences found)</span>
+    </h4>
+    <div class="d-flex gap-2">
+      <span class="badge bg-light text-dark border p-2"><i class="bi bi-check-circle-fill text-success me-1"></i> Complimentary WiFi</span>
+      <span class="badge bg-light text-dark border p-2"><i class="bi bi-cup-hot-fill text-warning me-1"></i> Gourmet Breakfast</span>
+    </div>
+  </div>
+
+  <!-- Rooms Grid -->
+  {% if rooms %}
+    <div class="row g-4">
+      {% for room in rooms %}
+        <div class="col-lg-4 col-md-6">
+          <div class="room-card">
+            <div class="room-card-img-wrapper">
+              <img src="{% static room.image_name %}" alt="{{ room.title }}" class="room-card-img">
+              <span class="room-badge">
+                <i class="bi {{ room.category.icon }} me-1"></i> {{ room.category.name }}
+              </span>
+              <div class="room-price-tag">
+                {% if room.discount_price %}
+                  <span class="text-muted text-decoration-line-through small me-1">${{ room.price_per_night|floatformat:0 }}</span>
+                  <span class="room-price-val">${{ room.discount_price|floatformat:0 }}</span>
+                {% else %}
+                  <span class="room-price-val">${{ room.price_per_night|floatformat:0 }}</span>
+                {% endif %}
+                <span class="text-muted small">/ night</span>
+              </div>
+            </div>
+
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="text-warning small">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <span class="text-dark fw-bold ms-1">{{ room.rating }}</span>
+                  <span class="text-muted">({{ room.reviews_count }})</span>
+                </div>
+                <span class="badge bg-light text-secondary border">Rm {{ room.room_number }}</span>
+              </div>
+
+              <h3 class="font-serif fs-4 fw-bold mb-2">
+                <a href="{% url 'room_detail' room.slug %}" class="text-dark text-decoration-none hover-gold">{{ room.title }}</a>
+              </h3>
+              <p class="text-muted small mb-3 flex-grow-1">
+                {{ room.short_description }}
+              </p>
+
+              <!-- Specs -->
+              <div class="room-specs">
+                <span><i class="bi bi-arrows-fullscreen text-warning"></i> {{ room.size_sqft }} sq ft</span>
+                <span><i class="bi bi-people text-warning"></i> Max {{ room.capacity }} Guests</span>
+                <span><i class="bi bi-moon-stars text-warning"></i> {{ room.beds }}</span>
+                <span><i class="bi bi-eye text-warning"></i> {{ room.view_type }}</span>
+              </div>
+
+              <div class="d-flex gap-2 pt-2">
+                <a href="{% url 'room_detail' room.slug %}" class="btn btn-outline-secondary rounded-pill flex-grow-1 py-2 text-center text-decoration-none">
+                  Details
+                </a>
+                <button type="button" 
+                        class="btn btn-gold rounded-pill px-3 py-2"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#quickBookModal"
+                        data-room-id="{{ room.id }}"
+                        data-room-title="{{ room.title }}"
+                        data-room-price="{% if room.discount_price %}{{ room.discount_price|floatformat:0 }}{% else %}{{ room.price_per_night|floatformat:0 }}{% endif %}"
+                        data-room-image="{% static room.image_name %}"
+                        data-room-slug="{{ room.slug }}">
+                  <i class="bi bi-lightning-charge-fill"></i> Reserve
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="text-center py-5 bg-white rounded-4 shadow-sm">
+      <div class="text-muted mb-3"><i class="bi bi-building-slash display-3 text-warning"></i></div>
+      <h3 class="font-serif">No Suites Matched Your Criteria</h3>
+      <p class="text-muted">Try adjusting your filters, selecting a different category, or resetting your search.</p>
+      <a href="{% url 'rooms' %}" class="btn btn-gold rounded-pill px-4 mt-2">Reset All Filters</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

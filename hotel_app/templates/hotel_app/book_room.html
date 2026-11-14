@@ -1,0 +1,163 @@
+{% extends 'hotel_app/base.html' %}
+{% load static %}
+
+{% block title %}Complete Reservation | The Grand Azure{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'hotel_app/css/book_room.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="py-4 bg-navy-dark text-white text-center">
+  <div class="container">
+    <span class="badge bg-warning text-dark px-3 py-1 rounded-pill mb-2">Secure Booking Portal</span>
+    <h2 class="font-serif fw-bold text-white mb-0">Confirm Your Luxury Retreat</h2>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="row g-5">
+    <!-- Left Column: Guest Details & Dates Form -->
+    <div class="col-lg-7">
+      <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
+        <h4 class="font-serif fw-bold text-navy mb-4">
+          <i class="bi bi-person-lines-fill text-warning me-2"></i> Guest &amp; Stay Information
+        </h4>
+
+        <form method="POST" action="{% if room %}{% url 'book_specific_room' room.slug %}{% else %}{% url 'book_room' %}{% endif %}">
+          {% csrf_token %}
+
+          {% if not room %}
+            <div class="mb-4">
+              <label class="form-label fw-bold text-secondary small text-uppercase">Select Suite Residence *</label>
+              <select name="room_id" class="form-select form-select-lg rounded-3" required>
+                {% for r in all_rooms %}
+                  <option value="{{ r.id }}" data-price="{% if r.discount_price %}{{ r.discount_price }}{% else %}{{ r.price_per_night }}{% endif %}">
+                    {{ r.title }} (${% if r.discount_price %}{{ r.discount_price|floatformat:0 }}{% else %}{{ r.price_per_night|floatformat:0 }}{% endif %}/night)
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+          {% else %}
+            <input type="hidden" name="room_id" value="{{ room.id }}">
+          {% endif %}
+
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label class="form-label fw-bold text-secondary small text-uppercase">Guest Full Name *</label>
+              {{ form.guest_name }}
+              {% if form.guest_name.errors %}<div class="text-danger small mt-1">{{ form.guest_name.errors }}</div>{% endif %}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold text-secondary small text-uppercase">Email Address *</label>
+              {{ form.guest_email }}
+              {% if form.guest_email.errors %}<div class="text-danger small mt-1">{{ form.guest_email.errors }}</div>{% endif %}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold text-secondary small text-uppercase">Contact Phone Number *</label>
+              {{ form.guest_phone }}
+              {% if form.guest_phone.errors %}<div class="text-danger small mt-1">{{ form.guest_phone.errors }}</div>{% endif %}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold text-secondary small text-uppercase">Number of Guests</label>
+              {{ form.guests_count }}
+              {% if form.guests_count.errors %}<div class="text-danger small mt-1">{{ form.guests_count.errors }}</div>{% endif %}
+            </div>
+          </div>
+
+          <h5 class="font-serif fw-bold text-navy mb-3">
+            <i class="bi bi-calendar-range text-warning me-2"></i> Dates of Stay
+          </h5>
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label class="form-label fw-bold text-secondary small text-uppercase">Check-In Date *</label>
+              {{ form.check_in }}
+              {% if form.check_in.errors %}<div class="text-danger small mt-1">{{ form.check_in.errors }}</div>{% endif %}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold text-secondary small text-uppercase">Check-Out Date *</label>
+              {{ form.check_out }}
+              {% if form.check_out.errors %}<div class="text-danger small mt-1">{{ form.check_out.errors }}</div>{% endif %}
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-bold text-secondary small text-uppercase">Concierge Notes &amp; Special Requests</label>
+            {{ form.special_requests }}
+            <small class="text-muted">Dietary preferences, champagne preference, arrival airport flight number, or celebration notes.</small>
+          </div>
+
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger rounded-3 mb-4">
+              {{ form.non_field_errors }}
+            </div>
+          {% endif %}
+
+          <button type="submit" class="btn btn-gold w-100 py-3 fs-5 justify-content-center">
+            <i class="bi bi-check-circle-fill"></i> Complete &amp; Confirm Reservation
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Right Column: Booking Summary & Details -->
+    <div class="col-lg-5">
+      {% if room %}
+        <div class="sticky-book-card">
+          <div class="position-relative rounded-3 overflow-hidden mb-3" style="height: 200px;">
+            <img src="{% static room.image_name %}" alt="{{ room.title }}" class="w-100 h-100" style="object-fit: cover;">
+            <span class="position-absolute bottom-0 start-0 m-2 badge bg-navy-dark text-warning px-3 py-1 font-serif">
+              Room {{ room.room_number }}
+            </span>
+          </div>
+
+          <h4 class="font-serif fw-bold text-navy mb-1">{{ room.title }}</h4>
+          <p class="text-muted small mb-3"><i class="bi bi-geo-alt text-warning me-1"></i> The Grand Azure &bull; {{ room.view_type }}</p>
+
+          <div class="d-flex justify-content-between align-items-baseline py-2 border-top border-bottom mb-3">
+            <span class="text-muted">Rate Per Night</span>
+            <span class="fw-bold fs-5 text-warning" id="room_base_price" data-price="{% if room.discount_price %}{{ room.discount_price }}{% else %}{{ room.price_per_night }}{% endif %}">
+              ${% if room.discount_price %}{{ room.discount_price|floatformat:2 }}{% else %}{{ room.price_per_night|floatformat:2 }}{% endif %}
+            </span>
+          </div>
+
+          <div class="bg-light p-3 rounded-3 mb-4">
+            <div class="d-flex justify-content-between small text-muted mb-2">
+              <span>Estimated Nights</span>
+              <span class="fw-bold text-dark" id="calc_nights">1 Night</span>
+            </div>
+            <div class="d-flex justify-content-between small text-muted mb-2">
+              <span>Subtotal</span>
+              <span class="fw-bold text-dark" id="calc_subtotal">$0.00</span>
+            </div>
+            <div class="d-flex justify-content-between small text-muted mb-2">
+              <span>Resort Service &amp; Taxes (10%)</span>
+              <span class="fw-bold text-dark" id="calc_tax">$0.00</span>
+            </div>
+            <div class="d-flex justify-content-between pt-2 border-top">
+              <span class="fw-bold text-navy fs-6">Grand Total</span>
+              <span class="fw-bold text-navy fs-4" id="calc_total">$0.00</span>
+            </div>
+          </div>
+
+          <div class="p-3 bg-warning-subtle rounded-3 border border-warning-subtle">
+            <h6 class="fw-bold text-dark mb-1"><i class="bi bi-gift-fill text-warning me-2"></i> Included with your stay</h6>
+            <ul class="list-unstyled mb-0 small text-secondary">
+              <li><i class="bi bi-check2 text-success me-1"></i> Chilled bottle of French Champagne on arrival</li>
+              <li><i class="bi bi-check2 text-success me-1"></i> Daily organic breakfast buffet in L'Azur</li>
+              <li><i class="bi bi-check2 text-success me-1"></i> Unlimited access to Thermal Spa &amp; Pools</li>
+              <li><i class="bi bi-check2 text-success me-1"></i> High-speed Wi-Fi 6 &amp; 24-hr Valet Parking</li>
+            </ul>
+          </div>
+        </div>
+      {% else %}
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white text-center">
+          <i class="bi bi-building-check text-warning display-4 mb-3"></i>
+          <h5 class="font-serif fw-bold">Select Your Suite</h5>
+          <p class="text-muted small">Choose your preferred residence on the left to see live pricing and inclusions.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
