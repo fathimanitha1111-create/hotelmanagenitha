@@ -1,0 +1,58 @@
+/* ==========================================================================
+   My Bookings & Reservation Lookup Stylesheet (my_bookings.css)
+   ========================================================================== */
+
+.lookup-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  padding: 2.2rem;
+  margin-bottom: 2.5rem;
+}
+
+.booking-item-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  padding: 1.8rem 2rem;
+  transition: var(--transition);
+  margin-bottom: 1.5rem;
+}
+
+.booking-item-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+.status-badge-confirmed {
+  background: #E6F4EA;
+  color: #137333;
+  border: 1px solid #CEEAD6;
+  font-weight: 600;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+}
+
+.status-badge-cancelled {
+  background: #FCE8E6;
+  color: #C5221F;
+  border: 1px solid #FAD2CF;
+  font-weight: 600;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+}
+
+.status-badge-pending {
+  background: #FEF7E0;
+  color: #B06000;
+  border: 1px solid #FEEFC3;
+  font-weight: 600;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+}

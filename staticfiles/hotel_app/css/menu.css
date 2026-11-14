@@ -1,0 +1,49 @@
+/* ==========================================================================
+   Menu Page Stylesheet (menu.css)
+   ========================================================================== */
+
+.menu-hero-banner {
+  background: linear-gradient(135deg, var(--primary-navy) 0%, #162447 100%);
+  padding: 4.5rem 0 3.5rem;
+  color: #FFFFFF;
+}
+
+.menu-item-row {
+  background: #FFFFFF;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  padding: 1.5rem 1.8rem;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.menu-item-row:hover {
+  transform: translateX(4px);
+  border-color: rgba(212, 175, 55, 0.4);
+  box-shadow: var(--shadow-md);
+}
+
+.menu-price-badge {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.menu-feature-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.menu-feature-img {
+  width: 100%;
+  height: 520px;
+  object-fit: cover;
+  transition: var(--transition-smooth);
+}
+
+.menu-feature-card:hover .menu-feature-img {
+  transform: scale(1.02);
+}

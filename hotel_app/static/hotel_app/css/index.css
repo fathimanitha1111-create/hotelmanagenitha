@@ -187,6 +187,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
     text-align: center;
     overflow: hidden;
     background: #111;
+    background-image: url('../images/catering_hero.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
 .hero-bg {
