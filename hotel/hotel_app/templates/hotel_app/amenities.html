@@ -1,0 +1,149 @@
+{% extends 'hotel_app/base.html' %}
+{% load static %}
+
+{% block title %}Amenities &amp; Wellness Experiences | The Grand Azure{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'hotel_app/css/amenities.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="py-5 bg-navy-dark text-white text-center">
+  <div class="container py-3">
+    <span class="badge bg-warning text-dark px-3 py-1 rounded-pill mb-2">Unrivaled Indulgence</span>
+    <h1 class="font-serif fw-bold text-white display-4 mb-2">Amenities &amp; Curated Experiences</h1>
+    <p class="text-white-50 lead mx-auto" style="max-width: 650px;">
+      Every moment at The Grand Azure is tailored for holistic wellbeing, sensory gastronomy, and serene seaside rejuvenation.
+    </p>
+  </div>
+</div>
+
+<div class="container py-5">
+  <!-- Feature 1: Thermal Spa -->
+  <div class="row align-items-center g-5 mb-5 pb-4">
+    <div class="col-lg-6">
+      <div class="position-relative rounded-4 overflow-hidden shadow-lg">
+        <img src="{% static 'hotel_app/images/resort_spa.jpg' %}" alt="Thermal Spa" class="img-fluid w-100" style="height: 420px; object-fit: cover;">
+        <span class="position-absolute top-0 start-0 m-3 badge bg-warning text-dark font-serif px-3 py-2 rounded-pill">
+          Forbes 5-Star Spa
+        </span>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <span class="section-tag">Holistic Rejuvenation</span>
+      <h2 class="font-serif fw-bold text-navy mb-3">The Subterranean Thermal Cave &amp; Spa</h2>
+      <p class="text-muted leading-relaxed mb-4">
+        Constructed from local hand-hewn limestone, our thermal sanctuary features natural seawater plunge pools, Roman stone saunas, and custom aromatic steam grottoes. Our European certified therapists offer personalized hydrotherapy, organic herbal wraps, and restorative sound bath rituals.
+      </p>
+      <div class="row g-3 mb-4">
+        <div class="col-6">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-water text-warning fs-4"></i>
+            <span class="fw-semibold small">Heated Mineral Baths</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-flower2 text-warning fs-4"></i>
+            <span class="fw-semibold small">Organic Swiss Botanicals</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-moon-stars-fill text-warning fs-4"></i>
+            <span class="fw-semibold small">Couples Massage Cabanas</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-heart-pulse-fill text-warning fs-4"></i>
+            <span class="fw-semibold small">Cryo &amp; Infrared Sauna</span>
+          </div>
+        </div>
+      </div>
+      <a href="{% url 'contact' %}" class="btn btn-navy rounded-pill px-4 py-2">Inquire for Spa Bookings</a>
+    </div>
+  </div>
+
+  <!-- Feature 2: Michelin Dining -->
+  <div class="row align-items-center g-5 mb-5 pb-4">
+    <div class="col-lg-6 order-lg-2">
+      <div class="position-relative rounded-4 overflow-hidden shadow-lg">
+        <img src="{% static 'hotel_app/images/hotel_dining.jpg' %}" alt="Fine Dining" class="img-fluid w-100" style="height: 420px; object-fit: cover;">
+        <span class="position-absolute bottom-0 end-0 m-3 badge bg-white text-dark shadow px-3 py-2 rounded-3">
+          <i class="bi bi-award-fill text-warning me-1"></i> Michelin 3-Star Chef
+        </span>
+      </div>
+    </div>
+    <div class="col-lg-6 order-lg-1">
+      <span class="section-tag">Haute Gastronomy</span>
+      <h2 class="font-serif fw-bold text-navy mb-3">L'Azur Oceanfront Restaurant &amp; Wine Cellar</h2>
+      <p class="text-muted leading-relaxed mb-4">
+        Savor breathtaking culinary art curated by renowned Michelin-starred chefs. Each dish celebrates daily coastal catches, heritage truffles, and locally harvested herbs, accompanied by a 4,000-bottle subterranean private wine vault.
+      </p>
+      <div class="row g-3 mb-4">
+        <div class="col-6">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-cup-straw text-warning fs-4"></i>
+            <span class="fw-semibold small">Sommelier Wine Pairings</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-sunset-fill text-warning fs-4"></i>
+            <span class="fw-semibold small">Romantic Sunset Terrace</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-fire text-warning fs-4"></i>
+            <span class="fw-semibold small">Open Wood-Fired Hearth</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-clock-history text-warning fs-4"></i>
+            <span class="fw-semibold small">24/7 In-Suite Dining</span>
+          </div>
+        </div>
+      </div>
+      <a href="{% url 'contact' %}" class="btn btn-navy rounded-pill px-4 py-2">Reserve a Private Table</a>
+    </div>
+  </div>
+
+  <!-- Feature 3: Infinity Pools & Private Beach -->
+  <div class="row align-items-center g-5 mb-5">
+    <div class="col-lg-6">
+      <div class="position-relative rounded-4 overflow-hidden shadow-lg">
+        <img src="{% static 'hotel_app/images/hero_resort.jpg' %}" alt="Infinity Pool" class="img-fluid w-100" style="height: 420px; object-fit: cover;">
+        <span class="position-absolute top-0 start-0 m-3 badge bg-navy-dark text-warning font-serif px-3 py-2 rounded-pill">
+          Cliffside Saltwater Pools
+        </span>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <span class="section-tag">Waterfront Bliss</span>
+      <h2 class="font-serif fw-bold text-navy mb-3">Multi-Tier Heated Saltwater Lagoons</h2>
+      <p class="text-muted leading-relaxed mb-4">
+        Lounge in private floating cabanas with uninterrupted vistas across the turquoise bay. Our poolside butlers provide chilled botanical mists, signature cocktails, and seasonal artisanal sorbets throughout the day.
+      </p>
+      <div class="row g-3 mb-4">
+        <div class="col-6">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-umbrella-fill text-warning fs-4"></i>
+            <span class="fw-semibold small">Private VIP Cabanas</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-tropical-storm text-warning fs-4"></i>
+            <span class="fw-semibold small">Direct Private Beach Pier</span>
+          </div>
+        </div>
+      </div>
+      <a href="{% url 'rooms' %}" class="btn btn-gold rounded-pill px-4 py-2">Book Your Stay</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'hotel_app/base.html' %}
+{% load static %}
+
+{% block title %}About Us &bull; Le Catering | Bespoke Culinary Art{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'hotel_app/css/about.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="py-5 bg-navy-dark text-white text-center">
+  <div class="container py-2">
+    <span class="badge bg-warning text-dark px-3 py-1 rounded-pill mb-2">Heritage Since 1889</span>
+    <h1 class="font-serif fw-bold text-white mb-2">Our Culinary Heritage &amp; Tradition</h1>
+    <p class="text-white-50 lead mx-auto" style="max-width: 650px;">
+      Founded in Paris by Mr. Smith, we continue to uphold timeless traditions of fine hospitality and culinary artistry.
+    </p>
+  </div>
+</div>
+
+<div class="container py-5 my-3">
+  <div class="row align-items-center g-5">
+    <div class="col-lg-6">
+      <div class="rounded-4 overflow-hidden shadow-lg">
+        <img src="{% static 'hotel_app/images/catering_about.jpg' %}" alt="Le Catering Ambience" class="img-fluid w-100" style="height: 480px; object-fit: cover;">
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <span class="text-warning text-uppercase fw-bold small letter-spacing-wide">Artisanal Sourcing</span>
+      <h2 class="font-serif fw-bold text-navy display-6 mb-3">Tradition Meets Modern Mastery</h2>
+      <p class="lead text-dark fw-medium mb-3">
+        We source directly from artisanal local producers to ensure only the highest quality seasonal ingredients make it to your table.
+      </p>
+      <p class="text-muted leading-relaxed mb-4">
+        Every event is approached as a clean canvas, tailored meticulously to your sensory criteria—in both exceptional presentation and unforgettable taste. From intimate candlelit dinners to majestic coastal galas, our culinary team brings over a century of dedication.
+      </p>
+      <div class="d-flex gap-3">
+        <a href="{% url 'menu' %}" class="btn btn-gold rounded-pill px-4 py-2">Explore Menu</a>
+        <a href="{% url 'contact' %}" class="btn btn-outline-dark rounded-pill px-4 py-2">Reserve Event</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

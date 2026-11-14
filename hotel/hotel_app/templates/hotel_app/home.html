@@ -1,0 +1,339 @@
+{% extends 'hotel_app/base.html' %}
+{% load static %}
+
+{% block title %}The Grand Azure | Luxury Resort &amp; 5-Star Suites{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'hotel_app/css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section" style="background-image: url('{% static 'hotel_app/images/hero_resort.jpg' %}');">
+  <div class="hero-overlay"></div>
+  <div class="container hero-content text-center">
+    <div class="animate-fade-in">
+      <span class="hero-tag mb-3">
+        <i class="bi bi-star-fill text-warning me-1"></i> The Pinnacle of Coastal Luxury &bull; Est. 2026
+      </span>
+      <h1 class="hero-title text-white">
+        Where Coastal Serenity<br>
+        <span class="text-warning fst-italic">Meets Architectural Grandeur</span>
+      </h1>
+      <p class="hero-subtitle">
+        Indulge in an extraordinary sanctuary overlooking Azure Bay. Curated Michelin dining, oceanfront private villas, and personalized concierge hospitality crafted for the discerning traveler.
+      </p>
+      <div class="d-flex flex-wrap justify-content-center gap-3">
+        <a href="#quick-booking" class="btn btn-gold btn-lg px-4 py-3">
+          <i class="bi bi-calendar-check"></i> Book Your Stay
+        </a>
+        <a href="{% url 'rooms' %}" class="btn btn-outline-light btn-lg px-4 py-3 rounded-pill">
+          <i class="bi bi-door-open"></i> Explore All Suites
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Floating Booking Search Card -->
+<div class="container" id="quick-booking">
+  <div class="booking-search-card">
+    <form method="GET" action="{% url 'rooms' %}" class="row g-3 align-items-end">
+      <div class="col-lg-3 col-md-6">
+        <label for="search_check_in" class="form-label">
+          <i class="bi bi-calendar-event text-warning me-1"></i> Check-In Date
+        </label>
+        <input type="date" class="form-control" id="search_check_in" name="check_in" value="{{ today }}">
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <label for="search_check_out" class="form-label">
+          <i class="bi bi-calendar-check text-warning me-1"></i> Check-Out Date
+        </label>
+        <input type="date" class="form-control" id="search_check_out" name="check_out">
+      </div>
+      <div class="col-lg-2 col-md-4">
+        <label for="search_category" class="form-label">
+          <i class="bi bi-building text-warning me-1"></i> Suite Type
+        </label>
+        <select class="form-select" id="search_category" name="category">
+          <option value="all">All Suites</option>
+          {% for cat in categories %}
+            <option value="{{ cat.slug }}">{{ cat.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-lg-2 col-md-4">
+        <label for="search_guests" class="form-label">
+          <i class="bi bi-people text-warning me-1"></i> Guests
+        </label>
+        <select class="form-select" id="search_guests" name="capacity">
+          <option value="1">1 Guest</option>
+          <option value="2" selected>2 Guests</option>
+          <option value="3">3 Guests</option>
+          <option value="4">4+ Guests</option>
+        </select>
+      </div>
+      <div class="col-lg-2 col-md-4">
+        <button type="submit" class="btn btn-gold w-100 py-2 justify-content-center">
+          <i class="bi bi-search"></i> Check Rates
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Featured Suites Showcase -->
+<section class="py-5 mt-4">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <span class="section-tag">Signature Accommodations</span>
+      <h2 class="section-title">Curated Suites &amp; Private Villas</h2>
+      <p class="section-subtitle">
+        Every residence at The Grand Azure is a harmonious fusion of natural stone, custom Italian woodwork, and uninterrupted views of the azure horizon.
+      </p>
+    </div>
+
+    <div class="row g-4">
+      {% for room in featured_rooms %}
+        <div class="col-lg-4 col-md-6">
+          <div class="room-card">
+            <div class="room-card-img-wrapper">
+              <img src="{% static room.image_name %}" alt="{{ room.title }}" class="room-card-img">
+              <span class="room-badge">
+                <i class="bi {{ room.category.icon }} me-1"></i> {{ room.category.name }}
+              </span>
+              <div class="room-price-tag">
+                {% if room.discount_price %}
+                  <span class="text-muted text-decoration-line-through small me-1">${{ room.price_per_night|floatformat:0 }}</span>
+                  <span class="room-price-val">${{ room.discount_price|floatformat:0 }}</span>
+                {% else %}
+                  <span class="room-price-val">${{ room.price_per_night|floatformat:0 }}</span>
+                {% endif %}
+                <span class="text-muted small">/ night</span>
+              </div>
+            </div>
+
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="text-warning small">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <span class="text-dark fw-bold ms-1">{{ room.rating }}</span>
+                  <span class="text-muted">({{ room.reviews_count }})</span>
+                </div>
+                <span class="badge bg-light text-secondary border">Room {{ room.room_number }}</span>
+              </div>
+
+              <h3 class="font-serif fs-4 fw-bold mb-2">
+                <a href="{% url 'room_detail' room.slug %}" class="text-dark text-decoration-none hover-gold">{{ room.title }}</a>
+              </h3>
+              <p class="text-muted small mb-3 flex-grow-1">
+                {{ room.short_description|truncatewords:20 }}
+              </p>
+
+              <!-- Room Specs -->
+              <div class="room-specs">
+                <span><i class="bi bi-arrows-fullscreen text-warning"></i> {{ room.size_sqft }} sq ft</span>
+                <span><i class="bi bi-people text-warning"></i> Up to {{ room.capacity }} Guests</span>
+                <span><i class="bi bi-moon-stars text-warning"></i> {{ room.beds }}</span>
+                <span><i class="bi bi-eye text-warning"></i> {{ room.view_type }}</span>
+              </div>
+
+              <div class="d-flex gap-2 pt-2">
+                <a href="{% url 'room_detail' room.slug %}" class="btn btn-outline-secondary rounded-pill flex-grow-1 py-2 text-center text-decoration-none">
+                  Details
+                </a>
+                <button type="button" 
+                        class="btn btn-gold rounded-pill px-3 py-2"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#quickBookModal"
+                        data-room-id="{{ room.id }}"
+                        data-room-title="{{ room.title }}"
+                        data-room-price="{% if room.discount_price %}{{ room.discount_price|floatformat:0 }}{% else %}{{ room.price_per_night|floatformat:0 }}{% endif %}"
+                        data-room-image="{% static room.image_name %}"
+                        data-room-slug="{{ room.slug }}">
+                  <i class="bi bi-lightning-charge-fill"></i> Book
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-5">
+      <a href="{% url 'rooms' %}" class="btn btn-outline-gold px-4 py-3">
+        <span>View Full Collection ({{ all_rooms.count }} Accommodations)</span>
+        <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Luxury Experience & Heritage Showcase -->
+<section class="py-5 bg-white border-top border-bottom">
+  <div class="container py-4">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <div class="position-relative">
+          <img src="{% static 'hotel_app/images/hotel_dining.jpg' %}" alt="Fine Dining" class="img-fluid rounded-4 shadow-lg w-100" style="height: 480px; object-fit: cover;">
+          <div class="card position-absolute bottom-0 end-0 m-3 m-md-4 p-3 bg-white border-0 shadow-lg rounded-4" style="max-width: 260px;">
+            <div class="d-flex align-items-center gap-3">
+              <div class="bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                <i class="bi bi-cup-hot-fill fs-4"></i>
+              </div>
+              <div>
+                <h6 class="fw-bold mb-0">Michelin 3-Star</h6>
+                <small class="text-muted">L'Azur Gastronomy</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <span class="section-tag">An Architectural Sanctuary</span>
+        <h2 class="section-title">Designed for Unrivaled Peace &amp; Refinement</h2>
+        <p class="text-muted mb-4 leading-relaxed">
+          The Grand Azure was sculpted to celebrate natural coastal light and timeless elegance. Every detail—from our hand-carved limestone arches to our private helipad and private sommelier cellar—caters to those who seek an elevated standard of living.
+        </p>
+
+        <div class="row g-4 mb-4">
+          <div class="col-sm-6">
+            <div class="d-flex gap-3">
+              <div class="text-warning fs-3"><i class="bi bi-water"></i></div>
+              <div>
+                <h5 class="fw-bold font-serif mb-1">Infinity Ocean Pools</h5>
+                <p class="text-muted small mb-0">Three heated saltwater infinity lagoons merging seamlessly into the sea.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="d-flex gap-3">
+              <div class="text-warning fs-3"><i class="bi bi-flower1"></i></div>
+              <div>
+                <h5 class="fw-bold font-serif mb-1">Holistic Thermal Spa</h5>
+                <p class="text-muted small mb-0">Ancient thermal baths, aromatherapy pavilions, and organic rituals.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="d-flex gap-3">
+              <div class="text-warning fs-3"><i class="bi bi-shield-check"></i></div>
+              <div>
+                <h5 class="fw-bold font-serif mb-1">24/7 Butler Service</h5>
+                <p class="text-muted small mb-0">Dedicated private butlers tending to packing, dining, and yacht excursions.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="d-flex gap-3">
+              <div class="text-warning fs-3"><i class="bi bi-car-front-fill"></i></div>
+              <div>
+                <h5 class="fw-bold font-serif mb-1">Airport Chauffeur</h5>
+                <p class="text-muted small mb-0">Complimentary Rolls-Royce / Maybach airport transfers for suite guests.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a href="{% url 'amenities' %}" class="btn btn-navy px-4 py-3">
+          <span>Discover Resort Amenities</span>
+          <i class="bi bi-arrow-right ms-2"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Spa & Thermal Haven Feature -->
+<section class="py-5 bg-navy-dark text-white">
+  <div class="container py-4">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 order-lg-2">
+        <div class="position-relative">
+          <img src="{% static 'hotel_app/images/resort_spa.jpg' %}" alt="Spa Sanctuary" class="img-fluid rounded-4 shadow-lg w-100" style="height: 440px; object-fit: cover;">
+          <div class="position-absolute top-0 start-0 m-3 badge bg-warning text-dark px-3 py-2 rounded-pill font-serif fw-bold">
+            <i class="bi bi-sparkles me-1"></i> Sanctuary Wellness
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 order-lg-1">
+        <span class="text-warning text-uppercase fw-bold small letter-spacing-wide">Rejuvenate Your Senses</span>
+        <h2 class="font-serif text-white display-5 fw-bold mb-3 mt-2">The Thermal Cave &amp; Marine Sanctuary</h2>
+        <p class="text-white-50 mb-4 leading-relaxed">
+          Immerse yourself in our subterranean Roman-inspired thermal mineral pools, warmed by natural volcanic stone. Our master therapists blend centuries-old marine therapies with bespoke organic botanicals.
+        </p>
+        <div class="d-flex flex-wrap gap-2 mb-4">
+          <span class="badge bg-white bg-opacity-10 text-warning px-3 py-2 rounded-pill"><i class="bi bi-check2 me-1"></i> Hydrotherapy Grotto</span>
+          <span class="badge bg-white bg-opacity-10 text-warning px-3 py-2 rounded-pill"><i class="bi bi-check2 me-1"></i> Himalayan Salt Room</span>
+          <span class="badge bg-white bg-opacity-10 text-warning px-3 py-2 rounded-pill"><i class="bi bi-check2 me-1"></i> Private Sunset Cabanas</span>
+        </div>
+        <a href="{% url 'amenities' %}" class="btn btn-gold px-4 py-3">
+          Explore Spa Menu &amp; Bookings
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Guest Testimonials -->
+<section class="py-5">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <span class="section-tag">Testimonials of Excellence</span>
+      <h2 class="section-title">Words From Discerning Guests</h2>
+      <p class="section-subtitle">Read verified guest experiences from their stays at The Grand Azure.</p>
+    </div>
+
+    <div class="row g-4">
+      {% for review in reviews %}
+        <div class="col-lg-3 col-md-6">
+          <div class="testimonial-card">
+            <div class="stars-rating">
+              {% for i in "12345" %}
+                <i class="bi bi-star-fill text-warning"></i>
+              {% endfor %}
+            </div>
+            <p class="text-muted small fst-italic mb-4">
+              "{{ review.comment }}"
+            </p>
+            <div class="d-flex align-items-center gap-3 pt-3 border-top mt-auto">
+              <div class="bg-navy-dark text-warning rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 42px; height: 42px;">
+                {{ review.author_name|slice:":1" }}
+              </div>
+              <div>
+                <h6 class="fw-bold mb-0 text-dark">{{ review.author_name }}</h6>
+                <small class="text-muted">{{ review.author_location }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Special VIP Invitation Banner -->
+<section class="py-5 bg-white border-top">
+  <div class="container">
+    <div class="p-5 rounded-4 shadow-lg text-white" style="background: linear-gradient(135deg, #0B1325 0%, #162447 100%); border: 1.5px solid rgba(212,175,55,0.3);">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+          <span class="badge bg-warning text-dark px-3 py-1 rounded-pill mb-2">Member Privilege</span>
+          <h2 class="font-serif text-white display-6 fw-bold mb-2">Receive 15% Off Your First Coastal Retreat</h2>
+          <p class="text-white-50 mb-0">Join The Grand Azure Club for complimentary airport chauffeurs, late checkout, and private sommelier tastings.</p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+          <a href="{% url 'register' %}" class="btn btn-gold btn-lg px-4 py-3">
+            <i class="bi bi-gem me-1"></i> Register Free Today
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
